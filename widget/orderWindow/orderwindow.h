@@ -17,6 +17,7 @@ public:
 
 private:
     Ui::orderWindow *ui;
+    QWidget* myParent;
 };
 
 #endif // ORDERWINDOW_H

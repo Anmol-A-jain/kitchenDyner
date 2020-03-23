@@ -23,7 +23,6 @@ class serverConnection : public QWidget
 public:
     explicit serverConnection(QWidget *parent = nullptr);
     ~serverConnection();
-    void connectToServer(QString ip);
     static void deleteAllThread();
 
 private slots:
@@ -32,6 +31,8 @@ private slots:
     void stateChanged(QAbstractSocket::SocketState state);
 
     void on_btnauto_clicked();
+
+    void connectToServer(QString ip);
 
 private:
     Ui::serverConnection *ui;
@@ -76,9 +77,12 @@ public slots :
 
     void myConnected()
     {
-        static_cast<serverConnection*>(myParent)->connectToServer(currIp);
+        emit connectToServer(currIp);
         qDebug() << "findByPing (myConnected) : state : " << socket->state() ;
     }
+
+signals:
+    void connectToServer(QString currIp);
 
 private:
     QString currIp;

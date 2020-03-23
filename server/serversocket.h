@@ -23,7 +23,6 @@ public slots:
 
 private:
     QWidget* myParent;
-    enum ALLAction{kitchenInfo = 101};
 };
 
 #endif // SERVERSOCKET_H

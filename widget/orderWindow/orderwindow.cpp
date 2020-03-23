@@ -6,6 +6,7 @@ orderWindow::orderWindow(QWidget *parent) :
     ui(new Ui::orderWindow)
 {
     ui->setupUi(this);
+    myParent = parent;
 }
 
 orderWindow::~orderWindow()

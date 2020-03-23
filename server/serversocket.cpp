@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include "widget/serverConnection/serverconnection.h"
 #include "kitchen.h"
+#include "data/allaction.h"
 
 QTcpSocket* serverSocket::serverClient = new QTcpSocket();
 
@@ -44,11 +45,7 @@ void serverSocket::myReadReady()
     }
 
     qDebug() << "serverConnection (myReadReady) : Data in: " << dataIn;
-    qDebug() << "serverConnection (myReadReady) : Data count: " << bytes;
-
-    QMessageBox m;
-    m.setText(dataIn);
-    m.exec();
+    qDebug() << "serverConnection (myReadReady) : Data count (Should be 0) : " << bytes;
 
     QDataStream in(&dataIn,QIODevice::ReadWrite);
 
@@ -56,6 +53,49 @@ void serverSocket::myReadReady()
     in >> action;
 
     qDebug() << "serverConnection (myReadReady) : action : " << action;
+
+
+    switch (action)
+    {
+        case ALLAction::kitchenInfo:
+        {
+
+
+            break;
+        }
+        case ALLAction::individual:
+        {
+            int orderNo,tblNo,count;
+
+            in >> orderNo >> tblNo >> count;
+
+            for (int i = 0; i < count; ++i)
+            {
+                QString itemName;
+                double qty;
+
+                in >> itemName >> qty;
+            }
+
+            QByteArray dataOut;
+            QDataStream out(&dataOut,QIODevice::ReadWrite);
+
+            qint16 sendAction = ALLAction::individual;
+            out << sendAction;
+
+            out << orderNo;
+
+            serverClient->write(dataOut);
+            serverClient->flush();
+
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+
 }
 
 void serverSocket::myConnected()

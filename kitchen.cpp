@@ -13,7 +13,6 @@ Kitchen::Kitchen(QWidget *parent)
     logWindow = newWindow(widgetWindow::serverConnectionWindow);
     childFrame = logWindow;
     ui->windowContainer->addWidget(childFrame);
-
 }
 
 Kitchen::~Kitchen()

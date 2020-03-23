@@ -16,20 +16,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    data/allaction.cpp \
+    data/globaldata.cpp \
     main.cpp \
     kitchen.cpp \
+    orderitemwidget.cpp \
     server/serversocket.cpp \
     widget/orderWindow/orderwindow.cpp \
     widget/serverConnection/serverconnection.cpp
 
 HEADERS += \
+    data/allaction.h \
+    data/globaldata.h \
     kitchen.h \
+    orderitemwidget.h \
     server/serversocket.h \
     widget/orderWindow/orderwindow.h \
     widget/serverConnection/serverconnection.h
 
 FORMS += \
     kitchen.ui \
+    orderitemwidget.ui \
     widget/orderWindow/orderwindow.ui \
     widget/serverConnection/serverconnection.ui
 
