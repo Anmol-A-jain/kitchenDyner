@@ -2,7 +2,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QDebug>
 
-QVector<orderData*> GlobalData::CartItem;
+QVector<OrderData*> GlobalData::orderList;
 
 GlobalData::GlobalData()
 {
@@ -27,25 +27,4 @@ void GlobalData::setShadow(QWidget *widget,QColor color,qreal real,qreal radius 
     effect->setBlurRadius(radius);
     effect->setColor(color);
     widget->setGraphicsEffect(effect);
-}
-
-void GlobalData::setItemQty(QString name, double qty, QString note)
-{
-    orderData* order = new orderData;
-
-    order->name = name;
-    order->note = note;
-    order->qty = qty;
-
-    CartItem.push_back(order);
-}
-
-void GlobalData::deleteCartVectordata()
-{
-    for (int i = 0; i < CartItem.count(); ++i)
-    {
-        delete CartItem.at(i);
-    }
-    CartItem.clear();
-    qDebug() << "GlobalData (deleteCartVectordata) : cart data has been deleted";
 }

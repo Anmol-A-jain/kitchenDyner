@@ -4,6 +4,7 @@
 #include "widget/serverConnection/serverconnection.h"
 #include "kitchen.h"
 #include "data/allaction.h"
+#include "data/globaldata.h"
 
 QTcpSocket* serverSocket::serverClient = new QTcpSocket();
 
@@ -65,16 +66,41 @@ void serverSocket::myReadReady()
         }
         case ALLAction::individual:
         {
-            int orderNo,tblNo,count;
+            qint16 orderNo,tblNo,count;
 
             in >> orderNo >> tblNo >> count;
+            qDebug() << "serverConnection (myReadReady) : cart Data : "  << orderNo << ":" << tblNo << ":" << count ;
+
+            QVector<OrderData*>* q = &GlobalData::orderList;
+
+            OrderData* order = new OrderData(orderNo,tblNo);
+            q->push_back(order);
 
             for (int i = 0; i < count; ++i)
             {
-                QString itemName;
+                QString itemName,id,note;
                 double qty;
 
-                in >> itemName >> qty;
+                in >> id >> itemName >> qty >> note;
+
+                order->setData(itemName,qty,OrderData::preparing,id,note);
+
+                qDebug() << "serverConnection (myReadReady) : data : " ;
+                qDebug() << "serverConnection (myReadReady) : id : " << id ;
+                qDebug() << "serverConnection (myReadReady) : name : " << itemName;
+                qDebug() << "serverConnection (myReadReady) : note : " << note;
+                qDebug() << "serverConnection (myReadReady) : qty : " << qty << "\n";
+            }
+
+            QVector<OrderItemData*>* itemData = order->getItemList();
+
+            for (int i = 0; i < itemData->count(); ++i)
+            {
+                qDebug() << "\nserverConnection (myReadReady) : data from GlobalData : " ;
+                qDebug() << "serverConnection (myReadReady) : id : " << itemData->at(i)->ID ;
+                qDebug() << "serverConnection (myReadReady) : name : " << itemData->at(i)->name ;
+                qDebug() << "serverConnection (myReadReady) : name : " << itemData->at(i)->note ;
+                qDebug() << "serverConnection (myReadReady) : qty : " << itemData->at(i)->qty ;
             }
 
             QByteArray dataOut;
@@ -112,7 +138,6 @@ void serverSocket::myConnected()
 
     serverConnection::deleteAllThread();
     static_cast<Kitchen*>(myParent)->orderList();
-
 
 }
 
