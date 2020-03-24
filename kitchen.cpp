@@ -55,3 +55,11 @@ void Kitchen::closeWindow()
     if(reply == QMessageBox::Ok)
         qApp->exit(0);
 }
+
+void Kitchen::addOrderItem(int orderNo)
+{
+    if(childFrame == orderInfoWindow)
+    {
+        static_cast<orderWindow*>(orderInfoWindow)->addItemWidget(orderNo);
+    }
+}

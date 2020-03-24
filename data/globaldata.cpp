@@ -28,3 +28,4 @@ void GlobalData::setShadow(QWidget *widget,QColor color,qreal real,qreal radius 
     effect->setColor(color);
     widget->setGraphicsEffect(effect);
 }
+

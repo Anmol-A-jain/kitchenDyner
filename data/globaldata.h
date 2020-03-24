@@ -10,7 +10,6 @@ class OrderData;
 struct OrderItemData
 {
     double qty;
-    int status = 0 ;
     QString name,ID,note;
 };
 
@@ -39,27 +38,30 @@ class OrderData
 private:
     qint16 orderNo;
     qint16 tblNo;
+    QString custName;
+    int status;
 
     QVector<OrderItemData*>* itemList;
 
 public:
 
-    enum orderStatus{sendning,preparing,accepted,finished};
+    enum orderStatus{sendning,sent,accepted,finished};
 
-    OrderData(qint16 orderNo,qint16 tblNo)
+    OrderData(qint16 orderNo,qint16 tblNo,QString orderType)
     {
         this->orderNo = orderNo;
         this->tblNo = tblNo;
+        this->custName = orderType;
+        this->status = sent;
         itemList = new QVector<OrderItemData*>;
     }
 
-    void setData(QString name,double qty,int status,QString ID,QString note)
+    void setData(QString name,double qty,QString ID,QString note)
     {
         OrderItemData* item = new OrderItemData;
 
         item->name = name;
         item->qty = qty;
-        item->status = status;
         item->ID = ID;
         item->note = note;
 
@@ -67,15 +69,9 @@ public:
     }
 
 
-    void updateStatus(QString ID,int status)
+    void updateStatus(int status)
     {
-        for (int i = 0; i < itemList->count(); ++i)
-        {
-            if(itemList->at(i)->ID == ID)
-            {
-                itemList->at(i)->status = status;
-            }
-        }
+        this->status = status;
     }
 
     QVector<OrderItemData *>* getItemList()
@@ -90,6 +86,14 @@ public:
     qint16 getTblNo()
     {
         return tblNo;
+    }
+    QString getCustName()
+    {
+        return custName;
+    }
+    int getStatus()
+    {
+        return status;
     }
 
 };

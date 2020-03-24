@@ -22,6 +22,8 @@ SOURCES += \
     kitchen.cpp \
     orderitemwidget.cpp \
     server/serversocket.cpp \
+    widget/orderWindow/customWidget/itemwidget.cpp \
+    widget/orderWindow/customWidget/orderdatawidget.cpp \
     widget/orderWindow/orderwindow.cpp \
     widget/serverConnection/serverconnection.cpp
 
@@ -31,12 +33,16 @@ HEADERS += \
     kitchen.h \
     orderitemwidget.h \
     server/serversocket.h \
+    widget/orderWindow/customWidget/itemwidget.h \
+    widget/orderWindow/customWidget/orderdatawidget.h \
     widget/orderWindow/orderwindow.h \
     widget/serverConnection/serverconnection.h
 
 FORMS += \
     kitchen.ui \
     orderitemwidget.ui \
+    widget/orderWindow/customWidget/itemwidget.ui \
+    widget/orderWindow/customWidget/orderdatawidget.ui \
     widget/orderWindow/orderwindow.ui \
     widget/serverConnection/serverconnection.ui
 

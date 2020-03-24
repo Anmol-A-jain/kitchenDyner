@@ -18,6 +18,8 @@ public:
     void orderList();
     void closeWindow();
 
+    void addOrderItem(int orderNo);
+
 private:
     Ui::Kitchen *ui;
     QWidget* childFrame;

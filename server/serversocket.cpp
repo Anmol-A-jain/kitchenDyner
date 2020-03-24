@@ -5,6 +5,7 @@
 #include "kitchen.h"
 #include "data/allaction.h"
 #include "data/globaldata.h"
+#include "kitchen.h"
 
 QTcpSocket* serverSocket::serverClient = new QTcpSocket();
 
@@ -67,13 +68,14 @@ void serverSocket::myReadReady()
         case ALLAction::individual:
         {
             qint16 orderNo,tblNo,count;
+            QString custName;
 
-            in >> orderNo >> tblNo >> count;
-            qDebug() << "serverConnection (myReadReady) : cart Data : "  << orderNo << ":" << tblNo << ":" << count ;
+            in >> orderNo >> custName >> tblNo >> count;
+            qDebug() << "serverConnection (myReadReady) : cart Data : "  << orderNo << ":" << custName << ":" << tblNo << ":" << count ;
 
             QVector<OrderData*>* q = &GlobalData::orderList;
 
-            OrderData* order = new OrderData(orderNo,tblNo);
+            OrderData* order = new OrderData(orderNo,tblNo,custName);
             q->push_back(order);
 
             for (int i = 0; i < count; ++i)
@@ -83,7 +85,7 @@ void serverSocket::myReadReady()
 
                 in >> id >> itemName >> qty >> note;
 
-                order->setData(itemName,qty,OrderData::preparing,id,note);
+                order->setData(itemName,qty,id,note);
 
                 qDebug() << "serverConnection (myReadReady) : data : " ;
                 qDebug() << "serverConnection (myReadReady) : id : " << id ;
@@ -99,7 +101,7 @@ void serverSocket::myReadReady()
                 qDebug() << "\nserverConnection (myReadReady) : data from GlobalData : " ;
                 qDebug() << "serverConnection (myReadReady) : id : " << itemData->at(i)->ID ;
                 qDebug() << "serverConnection (myReadReady) : name : " << itemData->at(i)->name ;
-                qDebug() << "serverConnection (myReadReady) : name : " << itemData->at(i)->note ;
+                qDebug() << "serverConnection (myReadReady) : note : " << itemData->at(i)->note ;
                 qDebug() << "serverConnection (myReadReady) : qty : " << itemData->at(i)->qty ;
             }
 
@@ -113,6 +115,8 @@ void serverSocket::myReadReady()
 
             serverClient->write(dataOut);
             serverClient->flush();
+
+            static_cast<Kitchen*>(myParent)->addOrderItem(orderNo);
 
             break;
         }
