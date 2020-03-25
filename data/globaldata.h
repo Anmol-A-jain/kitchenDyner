@@ -10,7 +10,7 @@ class OrderData;
 struct OrderItemData
 {
     double qty;
-    QString name,ID,note;
+    QString name,note;
 };
 
 class GlobalData
@@ -39,39 +39,28 @@ private:
     qint16 orderNo;
     qint16 tblNo;
     QString custName;
-    int status;
 
     QVector<OrderItemData*>* itemList;
 
 public:
-
-    enum orderStatus{sendning,sent,accepted,finished};
 
     OrderData(qint16 orderNo,qint16 tblNo,QString orderType)
     {
         this->orderNo = orderNo;
         this->tblNo = tblNo;
         this->custName = orderType;
-        this->status = sent;
         itemList = new QVector<OrderItemData*>;
     }
 
-    void setData(QString name,double qty,QString ID,QString note)
+    void setData(QString name,double qty,QString note)
     {
         OrderItemData* item = new OrderItemData;
 
         item->name = name;
         item->qty = qty;
-        item->ID = ID;
         item->note = note;
 
         itemList->push_back(item);
-    }
-
-
-    void updateStatus(int status)
-    {
-        this->status = status;
     }
 
     QVector<OrderItemData *>* getItemList()
@@ -91,11 +80,6 @@ public:
     {
         return custName;
     }
-    int getStatus()
-    {
-        return status;
-    }
-
 };
 
 #endif // GLOBALDATA_H

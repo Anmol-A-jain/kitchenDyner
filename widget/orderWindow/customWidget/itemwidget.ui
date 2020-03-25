@@ -65,19 +65,6 @@
            <number>1</number>
           </property>
           <item>
-           <widget class="QLabel" name="lblId">
-            <property name="maximumSize">
-             <size>
-              <width>100</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>id</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QLabel" name="lblName">
             <property name="maximumSize">
              <size>
@@ -88,28 +75,34 @@
             <property name="text">
              <string>name</string>
             </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
          </layout>
         </item>
         <item>
-         <widget class="QLineEdit" name="txtNote">
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-          <property name="placeholderText">
-           <string>Note</string>
+         <widget class="QLabel" name="txtNote">
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="lblQty">
         <property name="minimumSize">
          <size>
           <width>70</width>
           <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="text">

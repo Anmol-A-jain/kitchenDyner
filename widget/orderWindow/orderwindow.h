@@ -16,6 +16,8 @@ public:
     explicit orderWindow(QWidget *parent = nullptr);
     ~orderWindow();
     void addToOrderContainer(QWidget* window);
+    void deleteFromOrderContainer(orderDataWidget* orderData);
+    void refreshData();
 
 public slots:
     void addItemWidget(int orderNo);

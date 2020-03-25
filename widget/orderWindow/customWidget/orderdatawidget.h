@@ -2,6 +2,7 @@
 #define ORDERDATAWIDGET_H
 
 #include <QWidget>
+#include "widget/orderWindow/customWidget/itemwidget.h"
 
 namespace Ui {
 class orderDataWidget;
@@ -12,9 +13,15 @@ class orderDataWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit orderDataWidget(int orderNo,int tblNo,QString custName,int status,QWidget *parent = nullptr);
+    explicit orderDataWidget(int orderNo, int tblNo, QString custName, QWidget *parent = nullptr);
     ~orderDataWidget();
+    void loadData();
+    void deleteVectorData();
 
+private slots:
+    void on_btnComplete_clicked();
+
+    void on_btnAccepted_clicked();
 
 private:
     QWidget* myParent;
@@ -22,7 +29,8 @@ private:
     int orderNo;
     int tblNo;
     QString custName;
-    int status;
+
+    QVector<itemWidget*> list;
 
 };
 

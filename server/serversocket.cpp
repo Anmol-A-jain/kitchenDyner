@@ -80,15 +80,14 @@ void serverSocket::myReadReady()
 
             for (int i = 0; i < count; ++i)
             {
-                QString itemName,id,note;
+                QString itemName,note;
                 double qty;
 
-                in >> id >> itemName >> qty >> note;
+                in  >> itemName >> qty >> note;
 
-                order->setData(itemName,qty,id,note);
+                order->setData(itemName,qty,note);
 
                 qDebug() << "serverConnection (myReadReady) : data : " ;
-                qDebug() << "serverConnection (myReadReady) : id : " << id ;
                 qDebug() << "serverConnection (myReadReady) : name : " << itemName;
                 qDebug() << "serverConnection (myReadReady) : note : " << note;
                 qDebug() << "serverConnection (myReadReady) : qty : " << qty << "\n";
@@ -99,7 +98,6 @@ void serverSocket::myReadReady()
             for (int i = 0; i < itemData->count(); ++i)
             {
                 qDebug() << "\nserverConnection (myReadReady) : data from GlobalData : " ;
-                qDebug() << "serverConnection (myReadReady) : id : " << itemData->at(i)->ID ;
                 qDebug() << "serverConnection (myReadReady) : name : " << itemData->at(i)->name ;
                 qDebug() << "serverConnection (myReadReady) : note : " << itemData->at(i)->note ;
                 qDebug() << "serverConnection (myReadReady) : qty : " << itemData->at(i)->qty ;
@@ -109,9 +107,10 @@ void serverSocket::myReadReady()
             QDataStream out(&dataOut,QIODevice::ReadWrite);
 
             qint16 sendAction = ALLAction::individual;
-            out << sendAction;
+            QString status = "sent";
+            out << sendAction ;
 
-            out << orderNo;
+            out << orderNo  << status;
 
             serverClient->write(dataOut);
             serverClient->flush();

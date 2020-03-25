@@ -24,14 +24,53 @@ void orderWindow::addToOrderContainer(QWidget *window)
 {
     ui->orderContainer->addWidget(window,row,column);
 
-    if(column==3)
+    if(row == 0)
     {
-        row++;
-        column = 0;
+        row = 1;
     }
     else
     {
+        row = 0;
         column++;
+    }
+
+//    if(column==3)
+//    {
+//        row++;
+//        column = 0;
+//    }
+//    else
+//    {
+//        column++;
+//    }
+}
+
+void orderWindow::deleteFromOrderContainer(orderDataWidget *orderData)
+{
+    for (int i = 0; i < list.count(); ++i)
+    {
+        if(list.at(i) == orderData)
+        {
+            list.at(i)->deleteLater();
+            list.remove(i);
+        }
+    }
+    this->refreshData();
+}
+
+void orderWindow::refreshData()
+{
+
+    for (int i = 0; i < list.count(); ++i)
+    {
+        ui->orderContainer->removeWidget(list.at(i));
+    }
+    row = 0;
+    column = 0;
+
+    for (int i = 0; i < list.count(); ++i)
+    {
+        addToOrderContainer(list.at(i));
     }
 }
 
@@ -44,9 +83,9 @@ void orderWindow::addItemWidget(int orderNo)
         qDebug() << "orderWindow (addItemWidget) : Order No : " << q->at(i)->getOrderNo();
         if(q->at(i)->getOrderNo() == orderNo)
         {
-            int tblNo = q->at(i)->getTblNo(),status = q->at(i)->getStatus();
+            int tblNo = q->at(i)->getTblNo();
             QString custName = q->at(i)->getCustName();
-            orderDataWidget* window = new orderDataWidget(orderNo,tblNo,custName,status,this);
+            orderDataWidget* window = new orderDataWidget(orderNo,tblNo,custName,this);
             this->addToOrderContainer(window);
             list.push_back(window);
         }

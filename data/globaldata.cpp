@@ -22,10 +22,12 @@ QString GlobalData::getattribute(int tagname)
 
 void GlobalData::setShadow(QWidget *widget,QColor color,qreal real,qreal radius  )
 {
+    auto deleteItLater = widget->graphicsEffect() ;
     auto effect = new QGraphicsDropShadowEffect();
     effect->setOffset(real);
     effect->setBlurRadius(radius);
     effect->setColor(color);
     widget->setGraphicsEffect(effect);
+    delete deleteItLater;
 }
 
