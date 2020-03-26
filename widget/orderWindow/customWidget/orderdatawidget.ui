@@ -99,7 +99,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="horizontalWidget" native="true">
+       <widget class="QWidget" name="header" native="true">
         <property name="styleSheet">
          <string notr="true">background-color: rgb(234, 234, 234);</string>
         </property>
@@ -151,7 +151,7 @@
            <x>0</x>
            <y>0</y>
            <width>310</width>
-           <height>252</height>
+           <height>236</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">

@@ -8,6 +8,7 @@
 
 class serverSocket : public QObject
 {
+    Q_OBJECT
 public:
     serverSocket(QWidget* parent);
     void connectToSerever(QString ip);
@@ -20,6 +21,8 @@ public slots:
 
     void myDisconnect();
 
+signals:
+    void refreshOrders(qint16 orderNo);
 
 private:
     QWidget* myParent;

@@ -2,8 +2,9 @@
 #include "ui_kitchen.h"
 #include "widget/serverConnection/serverconnection.h"
 #include "widget/orderWindow/orderwindow.h"
-
 #include <QMessageBox>
+
+serverSocket* Kitchen::s;
 
 Kitchen::Kitchen(QWidget *parent)
     : QMainWindow(parent)

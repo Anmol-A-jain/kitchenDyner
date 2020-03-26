@@ -63,6 +63,15 @@ public:
         itemList->push_back(item);
     }
 
+    void deleteThis()
+    {
+        for (int i = 0; i < itemList->count(); ++i)
+        {
+            delete itemList->at(i);
+        }
+        itemList->clear();
+    }
+
     QVector<OrderItemData *>* getItemList()
     {
         return itemList;

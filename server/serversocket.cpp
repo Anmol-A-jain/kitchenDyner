@@ -119,6 +119,29 @@ void serverSocket::myReadReady()
 
             break;
         }
+        case ALLAction::deleteOrder:
+        {
+            qint16 orderNo;
+            in >> orderNo;
+
+            QVector<OrderData*>* q = &GlobalData::orderList;
+
+            qDebug() << "serverConnection (myReadReady) : deleteOrder : count of List (before) : " <<q->count();
+
+            for (int i = 0; i < q->count(); ++i)
+            {
+                if(q->at(i)->getOrderNo() == orderNo)
+                {
+                    q->at(i)->deleteThis();
+                    delete q->at(i);
+                    q->remove(i);
+                }
+                break;
+            }
+            qDebug() << "serverConnection (myReadReady) : deleteOrder : count of List (after): " <<q->count();
+            emit refreshOrders(orderNo);
+            break;
+        }
         default:
         {
             break;

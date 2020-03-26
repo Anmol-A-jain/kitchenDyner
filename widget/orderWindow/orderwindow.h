@@ -21,6 +21,7 @@ public:
 
 public slots:
     void addItemWidget(int orderNo);
+    void deleteOrder(qint16 orderNo);
 
 private:
     Ui::orderWindow *ui;

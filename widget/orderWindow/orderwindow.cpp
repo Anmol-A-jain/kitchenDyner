@@ -1,9 +1,11 @@
 #include "orderwindow.h"
 #include "ui_orderwindow.h"
 #include <data/globaldata.h>
+#include <server/serversocket.h>
 #include "widget/orderWindow/customWidget/orderdatawidget.h"
 #include <QDebug>
 #include <QScrollBar>
+#include <kitchen.h>
 
 orderWindow::orderWindow(QWidget *parent) :
     QWidget(parent),
@@ -13,6 +15,8 @@ orderWindow::orderWindow(QWidget *parent) :
     myParent = parent;
     row = 0;
     column = 0;
+
+    connect(Kitchen::s,SIGNAL(refreshOrders(qint16)),this,SLOT(deleteOrder(qint16)));
 }
 
 orderWindow::~orderWindow()
@@ -33,16 +37,6 @@ void orderWindow::addToOrderContainer(QWidget *window)
         row = 0;
         column++;
     }
-
-//    if(column==3)
-//    {
-//        row++;
-//        column = 0;
-//    }
-//    else
-//    {
-//        column++;
-//    }
 }
 
 void orderWindow::deleteFromOrderContainer(orderDataWidget *orderData)
@@ -91,4 +85,17 @@ void orderWindow::addItemWidget(int orderNo)
         }
     }
 
+}
+
+void orderWindow::deleteOrder(qint16 orderNo)
+{
+    qDebug() << "orderWindow (deleteOrder) : orderNo : " << orderNo;
+
+    for (int i = 0; i < list.count(); ++i)
+    {
+        if(orderNo == list.at(i)->getOrderNo())
+        {
+            deleteFromOrderContainer(list.at(i));
+        }
+    }
 }

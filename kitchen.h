@@ -2,6 +2,7 @@
 #define KITCHEN_H
 
 #include <QMainWindow>
+#include "server/serversocket.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Kitchen; }
@@ -17,8 +18,9 @@ public:
     QWidget* newWindow(int option);
     void orderList();
     void closeWindow();
-
     void addOrderItem(int orderNo);
+
+    static serverSocket* s;
 
 private:
     Ui::Kitchen *ui;

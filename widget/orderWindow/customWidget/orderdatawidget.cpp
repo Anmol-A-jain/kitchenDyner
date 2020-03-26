@@ -93,6 +93,29 @@ void orderDataWidget::on_btnComplete_clicked()
 
     serverSocket::serverClient->write(dataOut);
     serverSocket::serverClient->flush();
+
+
+    qDebug() << "orderDataWidget (on_btnComplete_clicked) : order No : " << orderNo ;
+    QVector<OrderData*>* orderList = &GlobalData::orderList;
+
+    for (int i = 0; i < orderList->count(); ++i)
+    {
+        if(orderList->at(i)->getOrderNo() == this->orderNo)
+        {
+            qDebug() << "orderDataWidget (loadData) : index no of orderList : " << i ;
+
+            QVector<OrderItemData*>* itemList = orderList->at(i)->getItemList();
+            qDebug() << "orderDataWidget (loadData) : count of item : " << itemList->count() ;
+            for (int j = 0; j < itemList->count(); ++j)
+            {
+                delete itemList->at(j);
+            }
+            itemList->clear();
+            delete orderList->at(i);
+            orderList->remove(i);
+        }
+    }
+
     static_cast<orderWindow*>(myParent)->deleteFromOrderContainer(this);
 
 }
@@ -115,4 +138,9 @@ void orderDataWidget::on_btnAccepted_clicked()
     serverSocket::serverClient->flush();
     ui->btnAccepted->hide();
     ui->btnComplete->show();
+}
+
+int orderDataWidget::getOrderNo() const
+{
+    return orderNo;
 }

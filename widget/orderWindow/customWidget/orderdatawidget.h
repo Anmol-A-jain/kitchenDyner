@@ -18,6 +18,8 @@ public:
     void loadData();
     void deleteVectorData();
 
+    int getOrderNo() const;
+
 private slots:
     void on_btnComplete_clicked();
 

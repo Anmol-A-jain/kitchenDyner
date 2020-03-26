@@ -2,6 +2,7 @@
 #include "ui_serverconnection.h"
 #include <QDebug>
 #include <QMessageBox>
+#include <kitchen.h>
 
 QVector<findByPing*> serverConnection::threadList;
 
@@ -40,8 +41,8 @@ serverConnection::~serverConnection()
 
 void serverConnection::connectToServer(QString ip)
 {
-    serverSocket* s = new serverSocket(myParent);
-    s->connectToSerever(ip);
+    Kitchen::s = new serverSocket(myParent);
+    Kitchen::s->connectToSerever(ip);
 }
 
 void serverConnection::deleteAllThread()
