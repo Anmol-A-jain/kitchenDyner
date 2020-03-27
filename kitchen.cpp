@@ -3,6 +3,7 @@
 #include "widget/serverConnection/serverconnection.h"
 #include "widget/orderWindow/orderwindow.h"
 #include <QMessageBox>
+#include <data/allaction.h>
 
 serverSocket* Kitchen::s;
 

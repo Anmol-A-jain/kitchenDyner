@@ -32,6 +32,16 @@ orderDataWidget::orderDataWidget(int orderNo, int tblNo, QString custName, QWidg
     GlobalData::setShadow(ui->btnComplete,QColor(255,0,0),0,10);
     GlobalData::setShadow(ui->btnAccepted,QColor(52, 149, 254),0,10);
 
+    QVector<OrderData*>* orderList = &GlobalData::orderList;
+    for (int i = 0; i < orderList->count(); ++i)
+    {
+        if(orderNo == orderList->at(i)->getOrderNo() && orderList->at(i)->getStatus() == OrderData::accepted)
+        {
+            ui->btnAccepted->hide();
+            ui->btnComplete->show();
+        }
+    }
+
     loadData();
 }
 
@@ -84,7 +94,7 @@ void orderDataWidget::on_btnComplete_clicked()
     QDataStream out(&dataOut,QIODevice::ReadWrite);
 
     qint16 sendAction = ALLAction::individual;
-    QString status = "finished";
+    QString status = OrderData::finished;
     qint16 orderNumber = this->orderNo;
 
     out << sendAction ;
@@ -126,7 +136,7 @@ void orderDataWidget::on_btnAccepted_clicked()
     QDataStream out(&dataOut,QIODevice::ReadWrite);
 
     qint16 sendAction = ALLAction::individual;
-    QString status = "accepted";
+    QString status = OrderData::accepted;
 
     qint16 orderNumber = this->orderNo;
 

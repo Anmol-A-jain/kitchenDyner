@@ -38,17 +38,22 @@ class OrderData
 private:
     qint16 orderNo;
     qint16 tblNo;
-    QString custName;
+    QString custName,status;
 
     QVector<OrderItemData*>* itemList;
 
+
 public:
 
-    OrderData(qint16 orderNo,qint16 tblNo,QString orderType)
+    // golobal status Strings
+    static QString sending , sent  , accepted , finished ;
+
+    OrderData(qint16 orderNo,qint16 tblNo,QString orderType,QString status = OrderData::sent)
     {
         this->orderNo = orderNo;
         this->tblNo = tblNo;
         this->custName = orderType;
+        this->status= status;
         itemList = new QVector<OrderItemData*>;
     }
 
@@ -88,6 +93,10 @@ public:
     QString getCustName()
     {
         return custName;
+    }
+    QString getStatus()
+    {
+        return status;
     }
 };
 
