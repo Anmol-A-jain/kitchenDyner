@@ -5,7 +5,9 @@
 #include "kitchen.h"
 #include "data/allaction.h"
 #include "data/globaldata.h"
+#include "data/databasecon.h"
 #include "kitchen.h"
+#include <QSqlQuery>
 
 QTcpSocket* serverSocket::serverClient = new QTcpSocket();
 
@@ -73,10 +75,9 @@ void serverSocket::myReadReady()
             in >> orderNo >> custName >> tblNo >> count;
             qDebug() << "serverConnection (myReadReady) : cart Data : "  << orderNo << ":" << custName << ":" << tblNo << ":" << count ;
 
-            QVector<OrderData*>* q = &GlobalData::orderList;
-
-            OrderData* order = new OrderData(orderNo,tblNo,custName);
-            q->push_back(order);
+            databaseCon d;
+            QString cmd = "INSERT INTO tblOrderData VALUES ("+QString::number(orderNo)+","+QString::number(tblNo)+",'"+custName+"','"+GlobalData::sent+"');";
+            delete d.execute(cmd);
 
             for (int i = 0; i < count; ++i)
             {
@@ -85,22 +86,13 @@ void serverSocket::myReadReady()
 
                 in  >> itemName >> qty >> note;
 
-                order->setData(itemName,qty,note);
+                cmd = "INSERT INTO tblOrderItemData VALUES ("+QString::number(orderNo)+","+QString::number(qty)+",'"+itemName+"','"+note+"');";
+                delete d.execute(cmd);
 
                 qDebug() << "serverConnection (myReadReady) : data : " ;
                 qDebug() << "serverConnection (myReadReady) : name : " << itemName;
                 qDebug() << "serverConnection (myReadReady) : note : " << note;
                 qDebug() << "serverConnection (myReadReady) : qty : " << qty << "\n";
-            }
-
-            QVector<OrderItemData*>* itemData = order->getItemList();
-
-            for (int i = 0; i < itemData->count(); ++i)
-            {
-                qDebug() << "\nserverConnection (myReadReady) : data from GlobalData : " ;
-                qDebug() << "serverConnection (myReadReady) : name : " << itemData->at(i)->name ;
-                qDebug() << "serverConnection (myReadReady) : note : " << itemData->at(i)->note ;
-                qDebug() << "serverConnection (myReadReady) : qty : " << itemData->at(i)->qty ;
             }
 
             QByteArray dataOut;
@@ -124,21 +116,10 @@ void serverSocket::myReadReady()
             qint16 orderNo;
             in >> orderNo;
 
-            QVector<OrderData*>* q = &GlobalData::orderList;
+            databaseCon d;
+            QString cmd = "DELETE FROM tblOrderData WHERE orderNo = "+QString::number(orderNo)+" ;";
+            delete d.execute(cmd);
 
-            qDebug() << "serverConnection (myReadReady) : deleteOrder : count of List (before) : " <<q->count();
-
-            for (int i = 0; i < q->count(); ++i)
-            {
-                if(q->at(i)->getOrderNo() == orderNo)
-                {
-                    q->at(i)->deleteThis();
-                    delete q->at(i);
-                    q->remove(i);
-                }
-                break;
-            }
-            qDebug() << "serverConnection (myReadReady) : deleteOrder : count of List (after): " <<q->count();
             emit refreshOrders(orderNo);
             break;
         }

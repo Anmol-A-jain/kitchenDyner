@@ -2,13 +2,10 @@
 #include <QGraphicsDropShadowEffect>
 #include <QDebug>
 
-QVector<OrderData*> GlobalData::orderList;
-
-
-QString OrderData::sending = "sending";
-QString OrderData::sent = "sent";
-QString OrderData::accepted = "accepted";
-QString OrderData::finished = "finished";
+QString GlobalData::sending = "sending";
+QString GlobalData::sent = "sent";
+QString GlobalData::accepted = "accepted";
+QString GlobalData::finished = "finished";
 
 GlobalData::GlobalData()
 {

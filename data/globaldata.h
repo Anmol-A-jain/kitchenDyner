@@ -5,14 +5,6 @@
 #include <QVector>
 #include <QWidget>
 
-class OrderData;
-
-struct OrderItemData
-{
-    double qty;
-    QString name,note;
-};
-
 class GlobalData
 {
 public:
@@ -26,78 +18,14 @@ public:
 
     enum data{clientName};
 
-    static QVector<OrderData*> orderList;
+    static QString sending ;
+    static QString sent ;
+    static QString accepted ;
+    static QString finished ;
 
 private:
     QHash<int,QString> tagname;
     QHash<int,QString> attribute;
-};
-
-class OrderData
-{
-private:
-    qint16 orderNo;
-    qint16 tblNo;
-    QString custName,status;
-
-    QVector<OrderItemData*>* itemList;
-
-
-public:
-
-    // golobal status Strings
-    static QString sending , sent  , accepted , finished ;
-
-    OrderData(qint16 orderNo,qint16 tblNo,QString orderType,QString status = OrderData::sent)
-    {
-        this->orderNo = orderNo;
-        this->tblNo = tblNo;
-        this->custName = orderType;
-        this->status= status;
-        itemList = new QVector<OrderItemData*>;
-    }
-
-    void setData(QString name,double qty,QString note)
-    {
-        OrderItemData* item = new OrderItemData;
-
-        item->name = name;
-        item->qty = qty;
-        item->note = note;
-
-        itemList->push_back(item);
-    }
-
-    void deleteThis()
-    {
-        for (int i = 0; i < itemList->count(); ++i)
-        {
-            delete itemList->at(i);
-        }
-        itemList->clear();
-    }
-
-    QVector<OrderItemData *>* getItemList()
-    {
-        return itemList;
-    }
-    qint16 getOrderNo()
-    {
-        return orderNo;
-    }
-
-    qint16 getTblNo()
-    {
-        return tblNo;
-    }
-    QString getCustName()
-    {
-        return custName;
-    }
-    QString getStatus()
-    {
-        return status;
-    }
 };
 
 #endif // GLOBALDATA_H

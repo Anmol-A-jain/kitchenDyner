@@ -1,4 +1,4 @@
-QT       += core gui network
+QT       += core gui network sql xml serialbus
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,7 +17,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     data/allaction.cpp \
+    data/databasecon.cpp \
     data/globaldata.cpp \
+    data/xmlmanipulation.cpp \
     main.cpp \
     kitchen.cpp \
     orderitemwidget.cpp \
@@ -29,7 +31,9 @@ SOURCES += \
 
 HEADERS += \
     data/allaction.h \
+    data/databasecon.h \
     data/globaldata.h \
+    data/xmlmanipulation.h \
     kitchen.h \
     orderitemwidget.h \
     server/serversocket.h \

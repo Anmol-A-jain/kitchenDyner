@@ -1,6 +1,7 @@
 #include "orderwindow.h"
 #include "ui_orderwindow.h"
 #include <data/globaldata.h>
+#include <data/databasecon.h>
 #include <server/serversocket.h>
 #include "widget/orderWindow/customWidget/orderdatawidget.h"
 #include <QDebug>
@@ -17,6 +18,29 @@ orderWindow::orderWindow(QWidget *parent) :
     column = 0;
 
     connect(Kitchen::s,SIGNAL(refreshOrders(qint16)),this,SLOT(deleteOrder(qint16)));
+
+    databaseCon d;
+    QString cmd = "SELECT * FROM tblOrderData ";
+    QSqlQuery* q =  d.execute(cmd);
+
+    while(q->next())
+    {
+//        qDebug() << "orderWindow (addItemWidget) : Order No : " << q->value("orderNo").toInt();
+//        if(q->value("orderNo").toInt() == orderNo)
+//        {
+
+        int orderNo = q->value("orderNo").toInt() ;//q->at(i)->getTblNo();
+        int tblNo = q->value("tblNo").toInt() ;//q->at(i)->getTblNo();
+        QString custName = q->value("custName").toString();//q->at(i)->getCustName();
+        QString status = q->value("status").toString();//q->at(i)->getCustName();
+
+
+        orderDataWidget* window = new orderDataWidget(orderNo,tblNo,custName,status,this);
+        this->addToOrderContainer(window);
+        list.push_back(window);
+//        }
+    }
+
 }
 
 orderWindow::~orderWindow()
@@ -70,19 +94,26 @@ void orderWindow::refreshData()
 
 void orderWindow::addItemWidget(int orderNo)
 {
-    QVector<OrderData*>* q = &GlobalData::orderList;
+    //QVector<OrderData*>* q = &GlobalData::orderList;
 
-    for (int i = 0; i < q->count(); ++i)
+    databaseCon d;
+    QString cmd = "SELECT * FROM tblOrderData WHERE orderNo = "+QString::number(orderNo)+" ;";
+    QSqlQuery* q =  d.execute(cmd);
+
+    while(q->next())
     {
-        qDebug() << "orderWindow (addItemWidget) : Order No : " << q->at(i)->getOrderNo();
-        if(q->at(i)->getOrderNo() == orderNo)
-        {
-            int tblNo = q->at(i)->getTblNo();
-            QString custName = q->at(i)->getCustName();
-            orderDataWidget* window = new orderDataWidget(orderNo,tblNo,custName,this);
-            this->addToOrderContainer(window);
-            list.push_back(window);
-        }
+//        qDebug() << "orderWindow (addItemWidget) : Order No : " << q->value("orderNo").toInt();
+//        if(q->value("orderNo").toInt() == orderNo)
+//        {
+        int tblNo = q->value("orderNo").toInt() ;//q->at(i)->getTblNo();
+        QString custName = q->value("custName").toString();//q->at(i)->getCustName();
+        QString status = q->value("status").toString();//q->at(i)->getCustName();
+
+
+        orderDataWidget* window = new orderDataWidget(orderNo,tblNo,custName,status,this);
+        this->addToOrderContainer(window);
+        list.push_back(window);
+//        }
     }
 
 }

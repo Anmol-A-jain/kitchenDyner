@@ -4,6 +4,7 @@
 #include "widget/orderWindow/orderwindow.h"
 #include <QMessageBox>
 #include <data/allaction.h>
+#include <data/databasecon.h>
 
 serverSocket* Kitchen::s;
 
@@ -15,6 +16,8 @@ Kitchen::Kitchen(QWidget *parent)
     logWindow = newWindow(widgetWindow::serverConnectionWindow);
     childFrame = logWindow;
     ui->windowContainer->addWidget(childFrame);
+
+    databaseCon::initDB();
 }
 
 Kitchen::~Kitchen()

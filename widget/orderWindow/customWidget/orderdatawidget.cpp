@@ -4,10 +4,11 @@
 #include "data/allaction.h"
 #include "widget/orderWindow/orderwindow.h"
 #include "server/serversocket.h"
+#include "data/databasecon.h"
 #include <QDebug>
 
 
-orderDataWidget::orderDataWidget(int orderNo, int tblNo, QString custName, QWidget *parent) :
+orderDataWidget::orderDataWidget(int orderNo, int tblNo, QString custName, QString status, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::orderDataWidget)
 {
@@ -18,6 +19,7 @@ orderDataWidget::orderDataWidget(int orderNo, int tblNo, QString custName, QWidg
     this->orderNo = orderNo;
     this->tblNo = tblNo;
     this->custName = custName;
+    this->status = status;
 
     ui->lblName->setText(ui->lblName->text().append(custName));
     ui->lblOrderNo->setText(ui->lblOrderNo->text() + QString::number(orderNo));
@@ -32,14 +34,20 @@ orderDataWidget::orderDataWidget(int orderNo, int tblNo, QString custName, QWidg
     GlobalData::setShadow(ui->btnComplete,QColor(255,0,0),0,10);
     GlobalData::setShadow(ui->btnAccepted,QColor(52, 149, 254),0,10);
 
-    QVector<OrderData*>* orderList = &GlobalData::orderList;
-    for (int i = 0; i < orderList->count(); ++i)
+//    QVector<OrderData*>* orderList = &GlobalData::orderList;
+//    for (int i = 0; i < orderList->count(); ++i)
+//    {
+//        if(orderNo == orderList->at(i)->getOrderNo() && orderList->at(i)->getStatus() == OrderData::accepted)
+//        {
+//            ui->btnAccepted->hide();
+//            ui->btnComplete->show();
+//        }
+//    }
+
+    if(status == GlobalData::accepted)
     {
-        if(orderNo == orderList->at(i)->getOrderNo() && orderList->at(i)->getStatus() == OrderData::accepted)
-        {
-            ui->btnAccepted->hide();
-            ui->btnComplete->show();
-        }
+        ui->btnAccepted->hide();
+        ui->btnComplete->show();
     }
 
     loadData();
@@ -55,28 +63,38 @@ void orderDataWidget::loadData()
 {
 
     qDebug() << "orderDataWidget (loadData) : order No : " << orderNo ;
-    QVector<OrderData*>* orderList = &GlobalData::orderList;
+    //QVector<OrderData*>* orderList = &GlobalData::orderList;
 
-    for (int i = 0; i < orderList->count(); ++i)
+    databaseCon d;
+    QString cmd = "SELECT *   FROM tblOrderItemData WHERE orderID = "+QString::number(orderNo)+" ;";
+    QSqlQuery* q =  d.execute(cmd);
+
+    while(q->next())
     {
-        if(orderList->at(i)->getOrderNo() == this->orderNo)
-        {
-            qDebug() << "orderDataWidget (loadData) : index no of orderList : " << i ;
-            QVector<OrderItemData*>* itemList = orderList->at(i)->getItemList();
-            qDebug() << "orderDataWidget (loadData) : count of item : " << itemList->count() ;
-            for (int j = 0; j < itemList->count(); ++j)
-            {
-                QString name = itemList->at(j)->name;
-                qDebug() << "orderDataWidget (loadData) : name : " << name  ;
-                QString note = itemList->at(j)->note;
-                qDebug() << "orderDataWidget (loadData) : note : " << note ;
-                double qty =  itemList->at(j)->qty;
-                qDebug() << "orderDataWidget (loadData) : qty : " << qty ;
-                itemWidget *item = new itemWidget(name,note,qty,this);
-                ui->itemContainer->addWidget(item);
-                list.push_back(item);
-            }
-        }
+
+        //qDebug() << "orderDataWidget (loadData) : index no of orderList : " << i ;
+        //QVector<OrderItemData*>* itemList = orderList->at(i)->getItemList();
+
+        //qDebug() << "orderDataWidget (loadData) : count of item : " << itemList->count() ;
+
+//        for (int j = 0; j < itemList->count(); ++j)
+//        {
+
+
+        QString name = q->value("name").toString() ;//itemList->at(j)->name;
+        QString note = q->value("note").toString() ;//itemList->at(j)->note;
+        double qty = q->value("qty").toDouble() ;//itemList->at(j)->qty;
+
+        qDebug() << "orderDataWidget (loadData) : name : " << name  ;
+        qDebug() << "orderDataWidget (loadData) : note : " << note ;
+        qDebug() << "orderDataWidget (loadData) : qty : " << qty ;
+
+        itemWidget *item = new itemWidget(name,note,qty,this);
+        ui->itemContainer->addWidget(item);
+        list.push_back(item);
+
+
+//        }
     }
 }
 
@@ -94,7 +112,7 @@ void orderDataWidget::on_btnComplete_clicked()
     QDataStream out(&dataOut,QIODevice::ReadWrite);
 
     qint16 sendAction = ALLAction::individual;
-    QString status = OrderData::finished;
+    QString status = GlobalData::finished;
     qint16 orderNumber = this->orderNo;
 
     out << sendAction ;
@@ -106,25 +124,30 @@ void orderDataWidget::on_btnComplete_clicked()
 
 
     qDebug() << "orderDataWidget (on_btnComplete_clicked) : order No : " << orderNo ;
-    QVector<OrderData*>* orderList = &GlobalData::orderList;
 
-    for (int i = 0; i < orderList->count(); ++i)
-    {
-        if(orderList->at(i)->getOrderNo() == this->orderNo)
-        {
-            qDebug() << "orderDataWidget (loadData) : index no of orderList : " << i ;
+    databaseCon d;
+    QString cmd = "DELETE FROM tblOrderData WHERE orderNo = "+QString::number(orderNo)+" ;";
+    delete  d.execute(cmd);
 
-            QVector<OrderItemData*>* itemList = orderList->at(i)->getItemList();
-            qDebug() << "orderDataWidget (loadData) : count of item : " << itemList->count() ;
-            for (int j = 0; j < itemList->count(); ++j)
-            {
-                delete itemList->at(j);
-            }
-            itemList->clear();
-            delete orderList->at(i);
-            orderList->remove(i);
-        }
-    }
+//    QVector<OrderData*>* orderList = &GlobalData::orderList;
+
+//    for (int i = 0; i < orderList->count(); ++i)
+//    {
+//        if(orderList->at(i)->getOrderNo() == this->orderNo)
+//        {
+//            qDebug() << "orderDataWidget (loadData) : index no of orderList : " << i ;
+
+//            QVector<OrderItemData*>* itemList = orderList->at(i)->getItemList();
+//            qDebug() << "orderDataWidget (loadData) : count of item : " << itemList->count() ;
+//            for (int j = 0; j < itemList->count(); ++j)
+//            {
+//                delete itemList->at(j);
+//            }
+//            itemList->clear();
+//            delete orderList->at(i);
+//            orderList->remove(i);
+//        }
+//    }
 
     static_cast<orderWindow*>(myParent)->deleteFromOrderContainer(this);
 
@@ -136,7 +159,7 @@ void orderDataWidget::on_btnAccepted_clicked()
     QDataStream out(&dataOut,QIODevice::ReadWrite);
 
     qint16 sendAction = ALLAction::individual;
-    QString status = OrderData::accepted;
+    QString status = GlobalData::accepted;
 
     qint16 orderNumber = this->orderNo;
 

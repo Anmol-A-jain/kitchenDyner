@@ -13,7 +13,7 @@ class orderDataWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit orderDataWidget(int orderNo, int tblNo, QString custName, QWidget *parent = nullptr);
+    explicit orderDataWidget(int orderNo, int tblNo, QString custName, QString status, QWidget *parent = nullptr);
     ~orderDataWidget();
     void loadData();
     void deleteVectorData();
@@ -30,7 +30,7 @@ private:
     Ui::orderDataWidget *ui;
     int orderNo;
     int tblNo;
-    QString custName;
+    QString custName,status;
 
     QVector<itemWidget*> list;
 
