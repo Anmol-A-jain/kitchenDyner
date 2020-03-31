@@ -32,7 +32,7 @@ databaseCon::databaseCon()
 void databaseCon::initDB()
 {
     // writing database path to XML by colling UDF setXml()
-    QString DBFile = QDir::currentPath() + "/DynerDB.db" ;
+    QString DBFile = QDir::currentPath() + "/kitchen.db" ;
     XmlManipulation::setData("Database","PATH",DBFile);
 
     qDebug() << "databaseCon.cpp (initDB) : Is file exist :" << QFile::exists(DBFile);
