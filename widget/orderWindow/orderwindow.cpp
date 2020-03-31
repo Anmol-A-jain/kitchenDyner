@@ -105,7 +105,7 @@ void orderWindow::addItemWidget(int orderNo)
 //        qDebug() << "orderWindow (addItemWidget) : Order No : " << q->value("orderNo").toInt();
 //        if(q->value("orderNo").toInt() == orderNo)
 //        {
-        int tblNo = q->value("orderNo").toInt() ;//q->at(i)->getTblNo();
+        int tblNo = q->value("tblNo").toInt() ;//q->at(i)->getTblNo();
         QString custName = q->value("custName").toString();//q->at(i)->getCustName();
         QString status = q->value("status").toString();//q->at(i)->getCustName();
 
