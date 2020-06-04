@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>949</width>
-    <height>687</height>
+    <width>925</width>
+    <height>686</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,9 +79,10 @@
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgba(255, 255, 255,0.3);
-border-radius:100%;
-border-image: url(:/img/img/logo.jpg);</string>
+           <string notr="true">border-image: url(:/img/img/logo.png);
+
+background-color: rgba(255, 255, 255,0.3);
+border-radius:100%;</string>
           </property>
           <property name="text">
            <string/>

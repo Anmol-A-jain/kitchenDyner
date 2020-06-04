@@ -123,41 +123,6 @@ void serverSocket::myReadReady()
             emit refreshOrders(orderNo);
             break;
         }
-        case ALLAction::loginKitchen:
-        {
-            static_cast<Kitchen*>(myParent)->orderList();
-            break;
-        }
-        case ALLAction::notification:
-        {
-            enum msgType{warning,informative,critical};
-            QString errMsg;
-            qint16 type;
-            in >> type >> errMsg;
-
-            switch (type)
-            {
-                case msgType::informative:
-                {
-                    QMessageBox::information(myParent,"Message",errMsg);
-                    break;
-                }
-                case msgType::warning:
-                {
-                    QMessageBox::warning(myParent,"Message",errMsg);
-                    break;
-                }
-                case msgType::critical:
-                {
-                    QMessageBox::critical(myParent,"Message",errMsg);
-                    break;
-                }
-
-            }
-
-
-            break;
-        }
         default:
         {
             break;
@@ -179,7 +144,7 @@ void serverSocket::myConnected()
     serverClient->write(data);
 
     serverConnection::deleteAllThread();
-    static_cast<Kitchen*>(myParent)->loginWidget();
+    static_cast<Kitchen*>(myParent)->orderList();
 
 }
 
