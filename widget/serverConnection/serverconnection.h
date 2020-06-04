@@ -9,7 +9,7 @@
 #include <QComboBox>
 #include "server/serversocket.h"
 
-class findByPing;
+class FindByIp;
 
 namespace Ui {
 class serverConnection;
@@ -39,15 +39,15 @@ private:
     QWidget* myParent;
     QString baseIp;
 
-    static QVector<findByPing*> threadList;
+    static QVector<FindByIp*> threadList;
 };
 
 
-class findByPing : public QThread
+class FindByIp : public QThread
 {
     Q_OBJECT
 public:
-    findByPing(QString ipAddress,QWidget* parent = nullptr)
+    FindByIp(QString ipAddress,QWidget* parent = nullptr)
     {
         myParent = parent;
         this->currIp = ipAddress;
@@ -57,7 +57,7 @@ public:
     void run()
     {
         socket = new QTcpSocket();
-        connect(socket,&QTcpSocket::connected,this,&findByPing::myConnected);
+        connect(socket,&QTcpSocket::connected,this,&FindByIp::myConnected);
         socket->connectToHost(this->currIp,1812);
 
         exec();

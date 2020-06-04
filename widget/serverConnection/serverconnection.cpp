@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <kitchen.h>
 
-QVector<findByPing*> serverConnection::threadList;
+QVector<FindByIp*> serverConnection::threadList;
 
 serverConnection::serverConnection(QWidget *parent) :
     QWidget(parent),
@@ -49,7 +49,7 @@ void serverConnection::deleteAllThread()
 {
     for(int i = 0; i < threadList.size(); ++i)
     {
-        threadList[i]->disconnectAndExit();
+        threadList[i]->exit();
     }
     qDebug() << "serverConnection (deleteAllThread) : deleted thread all thread ";
 }
@@ -108,13 +108,12 @@ void serverConnection::on_btnauto_clicked()
     {
         QString currIp = (baseNetowrk + "%1").arg(i);
 
-        findByPing* f = new findByPing(currIp,this);
+        FindByIp* f = new FindByIp(currIp,this);
         f->start();
         serverConnection::threadList.push_back(f);
         connect(f,SIGNAL(connectToServer(QString)),this,SLOT(connectToServer(QString)));
     }
+
     ui->btnauto->hide();
     ui->label_2->hide();
 }
-
-

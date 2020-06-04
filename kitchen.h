@@ -17,17 +17,22 @@ public:
     ~Kitchen();
     QWidget* newWindow(int option);
     void orderList();
+    void loginWidget();
     void closeWindow();
     void addOrderItem(int orderNo);
 
     static serverSocket* s;
+
+private slots:
+    void on_btnLogout_clicked();
 
 private:
     Ui::Kitchen *ui;
     QWidget* childFrame;
     QWidget* logWindow;
     QWidget* orderInfoWindow;
+    QWidget* login;
 
-    enum widgetWindow{serverConnectionWindow,orderListWindow};
+    enum widgetWindow{serverConnectionWindow,orderListWindow,loginWindow};
 };
 #endif // KITCHEN_H

@@ -22,8 +22,8 @@ SOURCES += \
     data/xmlmanipulation.cpp \
     main.cpp \
     kitchen.cpp \
-    orderitemwidget.cpp \
     server/serversocket.cpp \
+    widget/login/login.cpp \
     widget/orderWindow/customWidget/itemwidget.cpp \
     widget/orderWindow/customWidget/orderdatawidget.cpp \
     widget/orderWindow/orderwindow.cpp \
@@ -35,8 +35,8 @@ HEADERS += \
     data/globaldata.h \
     data/xmlmanipulation.h \
     kitchen.h \
-    orderitemwidget.h \
     server/serversocket.h \
+    widget/login/login.h \
     widget/orderWindow/customWidget/itemwidget.h \
     widget/orderWindow/customWidget/orderdatawidget.h \
     widget/orderWindow/orderwindow.h \
@@ -44,7 +44,7 @@ HEADERS += \
 
 FORMS += \
     kitchen.ui \
-    orderitemwidget.ui \
+    widget/login/login.ui \
     widget/orderWindow/customWidget/itemwidget.ui \
     widget/orderWindow/customWidget/orderdatawidget.ui \
     widget/orderWindow/orderwindow.ui \
