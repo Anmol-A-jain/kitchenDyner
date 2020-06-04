@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/background2.png</file>
+        <file>img/logo.jpg</file>
+    </qresource>
+    <qresource prefix="/database">
+        <file>database/kitchen.db</file>
+    </qresource>
+</RCC>
